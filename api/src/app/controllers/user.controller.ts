@@ -3,7 +3,7 @@ import { StatusCodes, ReasonPhrases } from "http-status-codes";
 
 import { User } from "../models/user.model";
 
-export function controller (app: Express) {
+export function controller (app: Express): void {
   console.log('::: Loading user.controller.ts - base route: /api/user :::');
 
   const router = Router();
@@ -30,7 +30,7 @@ export function controller (app: Express) {
           message: 'User alread exists'
         });
       }
-      
+
       body.is_admin = false;
       user = await User.create(body);
       user.password = undefined;
