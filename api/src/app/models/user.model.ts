@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 import { hash } from 'bcrypt';
-import mongoosePaginate from 'mongoose-paginate-v2';
+import { mongoosePagination, Pagination } from 'mongoose-paginate-ts';
 
 import { mongoose }  from '../../config/database';
 
@@ -39,8 +39,8 @@ UserSchema.pre('save', async function(next) {
   }
 });
 
-UserSchema.plugin(mongoosePaginate);
+UserSchema.plugin(mongoosePagination);
 
-const User = mongoose.model<IUser>('User', UserSchema);
+const User: Pagination<IUser> = mongoose.model<IUser, Pagination<IUser>>('User', UserSchema);
 
 export { User };
