@@ -29,5 +29,22 @@ export function controller(app: Express): void {
     }
   });
 
+  router.post('/create', async (req, res) => {
+    try {
+      console.log(req.body);
+      const body = { ...req.body };
+      body.is_archived = false;
+
+      const task = await Task.create(body);
+
+      return res.send(task);
+    } catch (error) {
+      console.log(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ 
+        message: ReasonPhrases.INTERNAL_SERVER_ERROR
+      });
+    }
+  });
+
   app.use('/api/task', router);
 }
