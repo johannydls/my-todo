@@ -11,7 +11,7 @@ async function main() {
   const DB_NAME = process.env.DB_NAME || '';
 
   const URL = `mongodb+srv://${DB_USER}:${DB_PASS}@cluster0.y7uig.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`;
-  console.log(`Trying to connect ${URL}\n`);
+  console.log(`\nConnecting database...`);
   await mongoose.connect(URL).then(() => {
     console.log(`Database connected ${new Date(Date.now())}\n`);
   });
