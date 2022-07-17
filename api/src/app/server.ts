@@ -2,6 +2,8 @@ require('dotenv').config();
 
 import express, { Request, Response } from 'express';
 
+import '../config/database';
+
 const app = express();
 
 app.get('/api', (_req: Request, res: Response) => {
