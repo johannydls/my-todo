@@ -1,8 +1,8 @@
-import { Express, Router, Request, Response } from "express";
-import { StatusCodes, ReasonPhrases } from "http-status-codes";
+import { Express, Router, Request, Response } from 'express';
+import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import { compare as bcryptCompare } from 'bcrypt';
 
-import { User } from "../models/user.model";
+import { User } from '../models/user.model';
 
 export function controller (app: Express): void {
   console.log('::: Loading user.controller.ts - base route: /api/user :::');

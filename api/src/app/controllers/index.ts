@@ -1,5 +1,5 @@
-import { readdirSync } from "fs";
-import { Express } from "express";
+import { readdirSync } from 'fs';
+import { Express } from 'express';
 
 export function loadControllers(app: Express) {
   console.log('\n--- IMPORTING CONTROLLERS ---');
