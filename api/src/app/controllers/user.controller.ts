@@ -1,8 +1,13 @@
 import { Express, Router, Request, Response } from 'express';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import { compare as bcryptCompare } from 'bcrypt';
+import { sign as JWT_Sign } from 'jsonwebtoken';
 
 import { User } from '../models/user.model';
+
+function generateToken(params = {}) {
+  return JWT_Sign(params, process.env.JWT_SECRET || 'secr3t', { expiresIn: 50400 }); // 50400s = 840 minutes = 14h
+}
 
 export function controller (app: Express): void {
   console.log('::: Loading user.controller.ts - base route: /api/user :::');
@@ -64,7 +69,10 @@ export function controller (app: Express): void {
 
       user.password = undefined;
 
+      const JWT_TOKEN = generateToken({ id: user._id });
+
       return res.send({
+        token: JWT_TOKEN,
         user
       });
     } catch (error) {
