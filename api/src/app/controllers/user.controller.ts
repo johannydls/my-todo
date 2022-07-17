@@ -20,5 +20,28 @@ export function controller (app: Express) {
     }
   });
 
+  router.post('/register', async (req: Request, res: Response) => {
+    try {
+      const body = { ...req.body };
+      let user = await User.findOne({ email: body.email });
+
+      if (user) {
+        return res.status(StatusCodes.BAD_REQUEST).send({
+          message: 'User alread exists'
+        });
+      }
+      
+      body.is_admin = false;
+      user = await User.create(body);
+      user.password = undefined;
+      return res.send(user);
+    } catch (error) {
+      console.log(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ 
+        message: ReasonPhrases.INTERNAL_SERVER_ERROR
+      });
+    }
+  });
+
   app.use('/api/user', router);
 }
