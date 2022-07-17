@@ -1,11 +1,13 @@
 require('dotenv').config();
 
-import express, { Request, Response } from 'express';
+import express, { Request, Response, json } from 'express';
 
 import '../config/database';
 import { loadControllers } from './controllers';
 
 const app = express();
+
+app.use(json());
 
 app.get('/api', (_req: Request, res: Response) => {
   return res.send({ info: 'API TODO APP', version: '1.0.0' });
