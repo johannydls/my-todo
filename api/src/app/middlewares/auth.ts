@@ -8,7 +8,7 @@ export function auth (req: CustomRequest, res: any, next: any): any {
 
   if (!auth_header) {
     return res.status(StatusCodes.UNAUTHORIZED).send({
-      message: ReasonPhrases.UNAUTHORIZED
+      message: 'Unauthorized. Missing "authorization" token in header request'
     });
   }
 
