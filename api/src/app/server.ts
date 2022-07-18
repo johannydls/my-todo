@@ -3,6 +3,7 @@ require('dotenv').config();
 import express, { Request, Response, NextFunction, json } from 'express';
 
 import '../config/database';
+import Logging from '../lib/Logging';
 import { loadControllers } from './controllers';
 
 const app = express();
@@ -27,5 +28,5 @@ loadControllers(app);
 const PORT = process.env.SERVER_PORT || 3002;
 
 app.listen(PORT, () => {
-  console.log(`\nAPI listening on http://localhost:${PORT}`);
+  Logging.infoNL(`API listening on http://localhost:${PORT}`);
 });

@@ -5,6 +5,7 @@ import { sign as JWT_Sign } from 'jsonwebtoken';
 
 import { User } from '../models/user.model';
 import { auth as authMiddleware } from '../middlewares/auth';
+import Logging from '../../lib/Logging';
 
 const EXPIRES_SECONDS = 50400; // 50400s = 840 minutes = 14h
 
@@ -12,8 +13,8 @@ function generateToken(params = {}) {
   return JWT_Sign(params, process.env.JWT_SECRET || 'secr3t', { expiresIn: EXPIRES_SECONDS }); // 50400s = 840 minutes = 14h
 }
 
-export function controller (app: Express): void {
-  console.log('::: Loading user.controller.ts - base route: /api/user :::');
+export function controller(app: Express): void {
+  Logging.info('::: Loading user.controller.ts - base route: /api/user :::');
 
   const router = Router();
 
@@ -28,8 +29,8 @@ export function controller (app: Express): void {
       }
       return res.send(user);
     } catch (error) {
-      console.log(error);
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ 
+      Logging.error(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
         message: ReasonPhrases.INTERNAL_SERVER_ERROR
       });
     }
@@ -59,8 +60,8 @@ export function controller (app: Express): void {
       const users = await User.paginate(paginate_options);
       return res.send(users);
     } catch (error) {
-      console.log(error);
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ 
+      Logging.error(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
         message: ReasonPhrases.INTERNAL_SERVER_ERROR
       });
     }
@@ -82,8 +83,8 @@ export function controller (app: Express): void {
       user.password = undefined;
       return res.send(user);
     } catch (error) {
-      console.log(error);
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ 
+      Logging.error(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
         message: ReasonPhrases.INTERNAL_SERVER_ERROR
       });
     }
@@ -96,15 +97,15 @@ export function controller (app: Express): void {
       const user = await User.findOne({ email }).select('+password');
 
       if (!user) {
-        return res.status(StatusCodes.NOT_FOUND).send({ 
-          message: ReasonPhrases.NOT_FOUND 
+        return res.status(StatusCodes.NOT_FOUND).send({
+          message: ReasonPhrases.NOT_FOUND
         });
       }
 
       if (!await bcryptCompare(password, user.password || '')) {
-        return res.status(StatusCodes.BAD_REQUEST).send({ 
-          message: 'Invalid password' 
-        }); 
+        return res.status(StatusCodes.BAD_REQUEST).send({
+          message: 'Invalid password'
+        });
       }
 
       user.password = undefined;
@@ -117,8 +118,8 @@ export function controller (app: Express): void {
         user
       });
     } catch (error) {
-      console.log(error);
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ 
+      Logging.error(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
         message: ReasonPhrases.INTERNAL_SERVER_ERROR
       });
     }
