@@ -21,13 +21,14 @@ app.use(function (_req: Request, res: Response, next: NextFunction) {
 });
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  Logging.infoRequest(`Request -> Method: [${req.method}] - Url: [${req.url}] - IP: [${req.socket?.remoteAddress}]`);
+  console.log();
+  Logging.infoRequest(`${req.method} ${req.url} - IP: [${req.socket?.remoteAddress}]`);
   const date_start = new Date(Date.now());
   res.on('finish', () => {
     const date_end = new Date(Date.now());
-    const time = date_end.getMilliseconds() - date_start.getMilliseconds();
-    Logging.infoRequest(`Request -> Method: [${req.method}] - Url: [${req.url}] - IP: [${req.socket?.remoteAddress}] - Status: [${res.statusCode}] - Time: [${time}ms]`);
-  })
+    const time = new Date(date_end.getTime() - date_start.getTime()).getMilliseconds();
+    Logging.infoRequest(`${req.method} ${req.originalUrl} - IP: [${req.socket?.remoteAddress}] - Status: [${res.statusCode}] - Time: [${time}ms]`);
+  });
   next();
 });
 
@@ -37,8 +38,14 @@ app.get('/api', (_req: Request, res: Response) => {
 
 loadControllers(app);
 
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const error = new Error(`[${req.method} ${req.url}] not found`);
+  Logging.error(error);
+  return res.status(404).send({ message: error.message });
+});
+
 const PORT = process.env.SERVER_PORT || 3002;
 
 app.listen(PORT, () => {
-  Logging.infoNL(`API listening on http://localhost:${PORT}`);
+  Logging.sysNL(`API listening on http://localhost:${PORT}`);
 });
