@@ -7,6 +7,11 @@ export default class Logging {
   public static info = (args: any) => {
     console.log(chalk.blue(`[${new Date().toLocaleString()}] [INFO] `), typeof args === 'string' ? chalk.blueBright(args) : args);
   }
+
+  public static infoRequest = (args: any) => {
+    console.log(chalk.green(`[${new Date().toLocaleString()}] [INFO] `), typeof args === 'string' ? chalk.greenBright(args) : args);
+  }
+
   public static infoNL = (args: any) => {
     console.log(`\n${chalk.blue(`[${new Date().toLocaleString()}] [INFO] `)}`, typeof args === 'string' ? chalk.blueBright(args) : args);
   }
