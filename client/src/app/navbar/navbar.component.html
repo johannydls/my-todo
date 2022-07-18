@@ -1,1 +1,113 @@
-<p>navbar works!</p>
+<nav class="app-nav" [class.closed]="closed" *ngIf="showNavbar()">
+  <div class="header">
+    <div class="logo">
+      <img src="../../assets/img/tasks.png" />
+      <span class="title">My Tasks!</span>
+    </div>
+    <span class="material-icons action-expand" [class.expand]="closed" (click)="setNavbarView()">navigate_before</span>
+  </div>
+  <div class="action">
+    <button class="expanded" *ngIf="!closed" [class.active]="mode === 'app'" (click)="changeMode('app')">App</button>
+    <button class="expanded" *ngIf="!closed" [class.active]="mode === 'admin'" (click)="changeMode('admin')">Admin</button>
+    <button class="compacted" *ngIf="closed" [class.active]="mode === 'app'" (click)="changeMode('app')">
+      <span class="material-icons">apps</span>
+    </button>
+    <button class="compacted" *ngIf="closed" [class.active]="mode === 'admin'" (click)="changeMode('admin')">
+      <span class="material-icons">admin_panel_settings</span>
+    </button>
+  </div>
+
+  <ul class="menu" *ngIf="isLogged() && mode === 'app'">
+    <li [routerLinkActive]="['active']">
+      <div>
+        <span class="material-icons">add_task</span>
+        <p>Tarefas</p>
+        <span class="material-icons">expand_more</span>
+      </div>
+      <div class="sub">
+        <a [routerLink]="['user/task/new']" [routerLinkActive]="['active']">
+          Novo
+          <span class="material-icons">add</span>
+        </a>
+      </div>
+    </li>
+    <li [routerLinkActive]="['active']">
+      <div>
+        <span class="material-icons">space_dashboard</span>
+        <p>Dashboards</p>
+        <span class="material-icons">expand_more</span>
+      </div>
+      <div class="sub">
+        <a [routerLink]="['user/task/dashboard']" [routerLinkActive]="['active']">
+          Tarefas
+          <span class="material-icons">list</span>
+        </a>
+      </div>
+    </li>
+    <li [routerLinkActive]="['active']">
+      <div>
+        <span class="material-icons">account_circle</span>
+        <p>Perfil</p>
+        <span class="material-icons">expand_more</span>
+      </div>
+      <div class="sub">
+        <a [routerLink]="['user/profile']" [routerLinkActive]="['active']">
+          Cadastro
+          <span class="material-icons">badge</span>
+        </a>
+      </div>
+    </li>
+    <li [routerLinkActive]="['active']">
+      <div>
+        <span class="material-icons">info</span>
+        <p>Sobre</p>
+        <span class="material-icons">expand_more</span>
+      </div>
+      <div class="sub">
+        <a>
+          Versão 1.0.0
+          <span class="material-icons">build</span>
+        </a>
+      </div>
+    </li>
+  </ul>
+
+  <ul class="menu" *ngIf="isLogged() && mode === 'admin' && isAdmin()">
+    <li [routerLinkActive]="['active']">
+      <div>
+        <span class="material-icons">space_dashboard</span>
+        <p>Dashboards</p>
+        <span class="material-icons">expand_more</span>
+      </div>
+      <div class="sub">
+        <a [routerLink]="['admin/tasks']" [routerLinkActive]="['active']">
+          Tarefas
+          <span class="material-icons">list</span>
+        </a>
+      </div>
+    </li>
+  </ul>
+
+  <div class="fixed-content">
+    <p class="version">v1.0.0</p>
+  </div>
+
+  <div class="bottom-content">
+    <div class="profile">
+      <div class="info" [routerLink]="['/user/profile']">
+        <span class="material-icons avatar">account_circle</span>
+        <div class="user-info">
+          <p>{{ getUserName() }}</p>
+          <p>{{ getUserEmail() }}</p>
+        </div>
+        <span class="material-icons arrow">navigate_next</span>
+      </div>
+      <div class="profile-menu">
+        <a (click)="signOut()">
+          Sair
+          <span class="material-icons">logout</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
