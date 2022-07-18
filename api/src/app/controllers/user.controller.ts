@@ -6,10 +6,6 @@ import { sign as JWT_Sign } from 'jsonwebtoken';
 import { User } from '../models/user.model';
 import { auth as authMiddleware } from '../middlewares/auth';
 
-type CustomRequest = Request & {
-  user_id: string;
-}
-
 const EXPIRES_SECONDS = 50400; // 50400s = 840 minutes = 14h
 
 function generateToken(params = {}) {
@@ -110,4 +106,8 @@ export function controller (app: Express): void {
   });
 
   app.use('/api/user', router);
+}
+
+type CustomRequest = Request & {
+  user_id: string;
 }

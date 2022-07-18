@@ -2,10 +2,6 @@ import { Request } from 'express';
 import { verify as JWT_Verify,  } from 'jsonwebtoken';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 
-type CustomRequest = Request & {
-  user_id: string;
-}
-
 export function auth (req: CustomRequest, res: any, next: any): any {
   const auth_header = req.headers ? req.headers.authorization : '';
   // const authCookie = req.cookies ? req.cookies.authorization : '';
@@ -36,4 +32,8 @@ export function auth (req: CustomRequest, res: any, next: any): any {
     return res.status(StatusCodes.UNAUTHORIZED).send({ message: 'Invalid token' });
   }
 
+}
+
+type CustomRequest = Request & {
+  user_id: string;
 }
