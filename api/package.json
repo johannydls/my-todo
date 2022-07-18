@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "rm -rf build/ && tsc",
+    "build:clear": "rm -rf build/",
+    "start": "node build/app/server.js",
     "start:dev": "tsnd --transpile-only --respawn --rs --ignore-watch node_modules src/app/server.ts"
   },
   "keywords": [],
