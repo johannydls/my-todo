@@ -4,15 +4,40 @@ import { compare as bcryptCompare } from 'bcrypt';
 import { sign as JWT_Sign } from 'jsonwebtoken';
 
 import { User } from '../models/user.model';
+import { auth as authMiddleware } from '../middlewares/auth';
+
+type CustomRequest = Request & {
+  user_id: string;
+}
+
+const EXPIRES_SECONDS = 50400; // 50400s = 840 minutes = 14h
 
 function generateToken(params = {}) {
-  return JWT_Sign(params, process.env.JWT_SECRET || 'secr3t', { expiresIn: 50400 }); // 50400s = 840 minutes = 14h
+  return JWT_Sign(params, process.env.JWT_SECRET || 'secr3t', { expiresIn: EXPIRES_SECONDS }); // 50400s = 840 minutes = 14h
 }
 
 export function controller (app: Express): void {
   console.log('::: Loading user.controller.ts - base route: /api/user :::');
 
   const router = Router();
+
+  router.get('/profile', authMiddleware, async (req: CustomRequest, res: any) => {
+    try {
+      const user = await User.findById(req.user_id);
+
+      if (!user) {
+        return res.status(StatusCodes.NOT_FOUND).send({
+          message: ReasonPhrases.NOT_FOUND
+        });
+      }
+      return res.send(user);
+    } catch (error) {
+      console.log(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ 
+        message: ReasonPhrases.INTERNAL_SERVER_ERROR
+      });
+    }
+  });
 
   router.get('/admin/list', async (req: Request, res: Response) => {
     try {
@@ -70,9 +95,10 @@ export function controller (app: Express): void {
       user.password = undefined;
 
       const JWT_TOKEN = generateToken({ id: user._id });
-
+      const date_expires = new Date(Date.now()).setSeconds(EXPIRES_SECONDS);
       return res.send({
         token: JWT_TOKEN,
+        token_expires: new Date(date_expires),
         user
       });
     } catch (error) {
