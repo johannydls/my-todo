@@ -84,6 +84,11 @@ export function controller(app: Express): void {
           message: 'Task not found'
         });
       }
+      if (`${task.owner}` !== `${user._id}`) {
+        return res.status(StatusCodes.UNAUTHORIZED).send({
+          message: 'Unauthorized. The task does not belong to you'
+        });
+      }
 
       task = await Task.findByIdAndUpdate(task._id, {
         $set: { ...req.body }}, 
@@ -119,6 +124,11 @@ export function controller(app: Express): void {
       if (!task) {
         return res.status(StatusCodes.NOT_FOUND).send({
           message: 'Task not found'
+        });
+      }
+      if (`${task.owner}` !== `${user._id}`) {
+        return res.status(StatusCodes.UNAUTHORIZED).send({
+          message: 'Unauthorized. The task does not belong to you'
         });
       }
 
@@ -159,6 +169,11 @@ export function controller(app: Express): void {
       if (!task) {
         return res.status(StatusCodes.NOT_FOUND).send({
           message: 'Task not found'
+        });
+      }
+      if (`${task.owner}` !== `${user._id}`) {
+        return res.status(StatusCodes.UNAUTHORIZED).send({
+          message: 'Unauthorized. The task does not belong to you'
         });
       }
 
