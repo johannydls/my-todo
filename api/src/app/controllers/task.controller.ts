@@ -1,19 +1,24 @@
-import { Express, Router, Request, Response } from 'express';
+import { Express, Router, Request } from 'express';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 
 import { Task } from '../models/task.model';
+
+import { auth as authMiddleware } from '../middlewares/auth';
+import { User } from '../models/user.model';
 
 export function controller(app: Express): void {
   console.log('::: Loading task.controller.ts - base route: /api/task :::');
 
   const router = Router();
 
-  router.get('/list', async (req: Request, res: Response) => {
+  router.get('/list', authMiddleware, async (req: CustomRequest, res: any) => {
     try {
       const paginate_options = {
-        query: {},
-        limit: 10,
-        page: 1,
+        query: {
+          owner: req.user_id
+        },
+        limit: Number(req.query.limit || 10),
+        page: Number(req.query.page || 1),
         populate: [
           { path: 'owner', select: 'email' }
         ]
@@ -29,11 +34,20 @@ export function controller(app: Express): void {
     }
   });
 
-  router.post('/create', async (req, res) => {
+  router.post('/create', authMiddleware, async (req: CustomRequest, res: any) => {
     try {
-      console.log(req.body);
+
+      const user = await User.findById(req.user_id);
+
+      if (!user) {
+        return res.status(StatusCodes.NOT_FOUND).send({ 
+          message: ReasonPhrases.NOT_FOUND 
+        });
+      }
+      
       const body = { ...req.body };
       body.is_archived = false;
+      body.owner = user._id;
 
       const task = await Task.create(body);
 
@@ -47,4 +61,8 @@ export function controller(app: Express): void {
   });
 
   app.use('/api/task', router);
+}
+
+type CustomRequest = Request & {
+  user_id: string;
 }
