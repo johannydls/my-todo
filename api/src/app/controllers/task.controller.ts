@@ -139,6 +139,40 @@ export function controller(app: Express): void {
     }
   });
 
+  router.delete('/delete/:task_id', authMiddleware, async (req: CustomRequest, res: any) => {
+    try {
+      let user: IUser | any, task: ITask | any;
+
+      await Promise.all([
+        User.findById(req.user_id),
+        Task.findById(req.params.task_id)
+      ]).then(result => {
+        user = result[0];
+        task = result[1];
+      });
+
+      if (!user) {
+        return res.status(StatusCodes.NOT_FOUND).send({
+          message: 'User not found'
+        });
+      }
+      if (!task) {
+        return res.status(StatusCodes.NOT_FOUND).send({
+          message: 'Task not found'
+        });
+      }
+
+      await Task.findByIdAndDelete(task._id);
+
+      return res.send({ message: 'Task deleted permanently' });
+    } catch (error) {
+      console.log(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ 
+        message: ReasonPhrases.INTERNAL_SERVER_ERROR
+      });
+    }
+  });
+
   app.use('/api/task', router);
 }
 
