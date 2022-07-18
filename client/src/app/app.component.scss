@@ -1,0 +1,12 @@
+.app {
+  margin-left: 0;
+  transition: .3s;
+}
+
+.app.logged {
+  margin-left: 270px;
+}
+
+.app.logged.closed {
+  margin-left: 65px;
+}
