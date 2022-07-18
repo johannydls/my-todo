@@ -35,9 +35,28 @@ export function controller (app: Express): void {
     }
   });
 
-  router.get('/admin/list', async (req: Request, res: Response) => {
+  router.get('/admin/list', authMiddleware, async (req: CustomRequest, res: any) => {
     try {
-      const users = await User.paginate();
+      const admin = await User.findById(req.user_id);
+
+      if (!admin) {
+        return res.status(StatusCodes.NOT_FOUND).send({
+          message: ReasonPhrases.NOT_FOUND
+        });
+      }
+
+      if (!admin.is_admin) {
+        return res.status(StatusCodes.UNAUTHORIZED).send({
+          message: 'User not allowed'
+        });
+      }
+
+      const paginate_options = {
+        limit: Number(req.query.limit || 10),
+        page: Number(req.query.page || 1)
+      };
+
+      const users = await User.paginate(paginate_options);
       return res.send(users);
     } catch (error) {
       console.log(error);

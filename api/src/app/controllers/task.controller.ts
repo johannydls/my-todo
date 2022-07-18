@@ -22,7 +22,8 @@ export function controller(app: Express): void {
         populate: [
           { path: 'owner', select: 'email' }
         ]
-      }
+      };
+      
       const tasks = await Task.paginate(paginate_options);
 
       return res.send(tasks);
