@@ -1,10 +1,10 @@
 import { Express, Router, Request } from 'express';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 
-import { Task } from '../models/task.model';
+import { ITask, Task } from '../models/task.model';
 
 import { auth as authMiddleware } from '../middlewares/auth';
-import { User } from '../models/user.model';
+import { IUser, User } from '../models/user.model';
 
 export function controller(app: Express): void {
   console.log('::: Loading task.controller.ts - base route: /api/task :::');
@@ -21,9 +21,10 @@ export function controller(app: Express): void {
         page: Number(req.query.page || 1),
         populate: [
           { path: 'owner', select: 'email' }
-        ]
+        ],
+        sort: '-updated_at'
       };
-      
+
       const tasks = await Task.paginate(paginate_options);
 
       return res.send(tasks);
@@ -51,6 +52,43 @@ export function controller(app: Express): void {
       body.owner = user._id;
 
       const task = await Task.create(body);
+
+      return res.send(task);
+    } catch (error) {
+      console.log(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ 
+        message: ReasonPhrases.INTERNAL_SERVER_ERROR
+      });
+    }
+  });
+  
+  router.put('/edit/:task_id', authMiddleware, async (req: CustomRequest, res: any) => {
+    try {
+      let user: IUser | any, task: ITask | any;
+
+      await Promise.all([
+        User.findById(req.user_id),
+        Task.findById(req.params.task_id)
+      ]).then(result => {
+        user = result[0];
+        task = result[1];
+      });
+
+      if (!user) {
+        return res.status(StatusCodes.NOT_FOUND).send({
+          message: 'User not found'
+        });
+      }
+      if (!task) {
+        return res.status(StatusCodes.NOT_FOUND).send({
+          message: 'Task not found'
+        });
+      }
+
+      task = await Task.findByIdAndUpdate(task._id, {
+        $set: { ...req.body }}, 
+        { new: true }
+      );
 
       return res.send(task);
     } catch (error) {
