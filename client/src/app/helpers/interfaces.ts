@@ -42,3 +42,28 @@ export interface AxiosCatch {
     data: any
   }
 }
+
+export interface Task {
+  _id: string;
+  title: string;
+  description: string;
+  categories: string[];
+  created_at: string;
+  updated_at: string;
+  is_archived: string;
+  status: string;
+  owner: any;
+}
+export interface AxiosTasksPaginate {
+  data: {
+    limit: number;
+    hasPrevPage: boolean;
+    hasNextPage: boolean;
+    hasMore: boolean;
+    docs: Task[];
+    totalDocs: number;
+    totalPages: number;
+    page: number;
+    pagingCounter: number;
+  }
+}

@@ -1,1 +1,7 @@
-<p>dashboard works!</p>
+<div class="app-dashboard">
+  <div class="list">
+    <div class="task-item" *ngFor="let task of tasks">
+      <span>{{ task.title }} - {{ task.created_at }}</span>
+    </div>
+  </div>
+</div>
