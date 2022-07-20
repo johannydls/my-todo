@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/helpers/interfaces';
+import axios from 'axios';
+import { AxiosUser, User } from 'src/app/helpers/interfaces';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
 
-  private AUTHORIZATION: string;
-  private USER_ID: string | undefined;
+  private END_POINT: string;
+
+  private AUTHORIZATION: string | undefined;
+  private USER_ID: string;
 
   public user: User | undefined;
   public USERNAME: string | undefined;
   public isLogged: boolean;
-
 
   public navbar: Navbar = {
     closed: false
@@ -23,23 +26,68 @@ export class SessionService {
     private router: Router
   ) {
     this.isLogged = false;
-    this.user = undefined;
+    this.END_POINT = environment.base_url;
+    this.init();
+  }
+
+  // ---------------------------------------------------------------------------- //
+  private getConfig(): any {
+    const token = this.getAuthorization() || '';
+    axios.defaults.headers.common['Authorization'] = token;
+    return { headers: { Authorization: token } };
+  }
+
+  private updateSession(): Promise<AxiosUser> {
+    return axios.get(this.END_POINT + '/user/profile', this.getConfig());
+  }
+  // ---------------------------------------------------------------------------- //
+
+  public init(): void {
+    console.log('init session service');
+    this.navbar.closed = localStorage.getItem('nav_closed') === 'true';
+
+    if (!!localStorage.getItem('authorization')) {
+      console.log('Localstorage found')
+      console.log(localStorage.getItem('authorization'));
+      this.isLogged = true;
+      const expires = new Date(localStorage.getItem('expiresIn') || Date.now());
+      expires.setMinutes(expires.getMinutes() - 1);
+
+      if (expires > new Date(Date.now())) {
+        this.setAuthorization(localStorage.getItem('authorization')!);
+        this.setUserID(localStorage.getItem('user_id')!);
+        this.updateSession().then(res => {
+          this.setUser(res.data);
+          this.setUserName(localStorage.getItem('user_name')!);
+          this.setIsLogged(true);
+        }).catch(err => {
+          this.logout();
+          this.router.navigate(['/session/auth']);
+        });
+      }
+    }
   }
 
   public logout(): void {
-    console.log('logout session')
+    console.log('logout session');
+    const navClosed = localStorage.getItem('nav_closed') || false;
+    localStorage.clear();
+    localStorage.setItem('nav_closed', navClosed.toString());
+    this.setIsLogged(false);
+    this.setUser(undefined);
+    this.setUserName(undefined);
   }
 
   public changeStatusNavbar(status: boolean): void {
     this.navbar.closed = status;
   }
 
-  public getAuthorization(): string {
+  public getAuthorization(): string | undefined {
     return this.AUTHORIZATION;
   }
 
-  public setAuthorization(value: string): void {
-    localStorage.setItem('authorization', value);
+  public setAuthorization(value: string | undefined): void {
+    localStorage.setItem('authorization', value || '');
     this.AUTHORIZATION = value;
   }
 
@@ -56,10 +104,12 @@ export class SessionService {
   }
 
   public setUserID(value: string): void {
+    localStorage.setItem('user_id', value || '');
     this.USER_ID = value;
   }
 
-  public setUserName(value: string): void {
+  public setUserName(value: string | undefined): void {
+    localStorage.setItem('user_name', value || '');
     this.USERNAME = value;
   }
 
@@ -67,7 +117,7 @@ export class SessionService {
     return this.user || undefined;
   }
 
-  public setUser(data: User): void {
+  public setUser(data: User | undefined): void {
     this.user = data;
   }
 

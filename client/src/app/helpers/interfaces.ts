@@ -33,6 +33,10 @@ export interface AxiosUserAuth {
   data: UserAuth
 }
 
+export interface AxiosUser {
+  data: User
+}
+
 export interface AxiosCatch {
   response: {
     data: any

@@ -57,12 +57,13 @@ export class SigninComponent implements OnInit {
 
   public authSuccess(res: AxiosUserAuth): void {
     console.log('authSuccess')
+    this.setExpiresIn(res.data.token_expires);
     this.session.setAuthorization(res.data.token);
     this.session.setUserID(res.data.user._id);
     this.session.setUserName(res.data.user.name);
     this.session.setUser(res.data.user);
     this.session.setIsLogged(true);
-    this.session.routeNavigate('/user/profile');
+    this.session.routeNavigate('/task/dashboard');
   }
 
   public resetErrors(): void {
@@ -73,6 +74,10 @@ export class SigninComponent implements OnInit {
     };
   }
 
+  private setExpiresIn(date: string): void {
+    const expiresIn = date ? new Date(date) : new Date(Date.now());
+    localStorage.setItem('expiresIn', expiresIn.toISOString());
+  }
 
 }
 
