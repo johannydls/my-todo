@@ -40,11 +40,11 @@ export class NavbarComponent implements OnInit {
   }
 
   public getUserName(): string {
-    return 'Johanny';
+    return this.session.getUser()?.name || '';
   }
 
   public getUserEmail(): string {
-    return 'johanny.dls@gmail.com';
+    return this.session.getUser()?.email || '';
   }
 
   public signOut(): void {

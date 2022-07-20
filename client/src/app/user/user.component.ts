@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../helpers/interfaces';
+import { SessionService } from '../services/session/session.service';
 
 @Component({
   selector: 'app-user',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserComponent implements OnInit {
 
-  constructor() { }
+  public user: User | undefined;
+
+  constructor(
+    private session: SessionService
+  ) { }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.user = this.session.getUser();
+    }, 500);
   }
 
 }
