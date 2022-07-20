@@ -31,14 +31,14 @@ export class SessionService {
   }
 
   // ---------------------------------------------------------------------------- //
-  private getConfig(): any {
+  private getAuthToken(): any {
     const token = this.getAuthorization() || '';
     axios.defaults.headers.common['Authorization'] = token;
     return { headers: { Authorization: token } };
   }
 
   private updateSession(): Promise<AxiosUser> {
-    return axios.get(this.END_POINT + '/user/profile', this.getConfig());
+    return axios.get(this.END_POINT + '/user/profile', this.getAuthToken());
   }
   // ---------------------------------------------------------------------------- //
 

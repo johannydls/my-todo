@@ -17,7 +17,7 @@ export class UserService {
     this.END_POINT = environment.base_url;
   }
 
-  private getConfig(): any {
+  private getAuthToken(): any {
     const token = this.session.getAuthorization() || '';
     axios.defaults.headers.common['Authorization'] = token;
     return { headers: { Authorization: token } };
@@ -28,6 +28,6 @@ export class UserService {
   }
 
   public userProfile(): Promise<User> {
-    return axios.get(this.END_POINT + '/user/profile', this.getConfig());
+    return axios.get(this.END_POINT + '/user/profile', this.getAuthToken());
   }
 }
