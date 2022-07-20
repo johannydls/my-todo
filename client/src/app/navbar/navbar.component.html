@@ -4,15 +4,20 @@
       <img src="../../assets/img/tasks.png" />
       <span class="title">My Tasks!</span>
     </div>
-    <span class="material-icons action-expand" [class.expand]="closed" (click)="setNavbarView()">navigate_before</span>
+    <span class="material-icons action-expand" [class.expand]="closed"
+      (click)="setNavbarView()">navigate_before</span>
   </div>
   <div class="action">
-    <button class="expanded" *ngIf="!closed" [class.active]="mode === 'app'" (click)="changeMode('app')">App</button>
-    <button class="expanded" *ngIf="!closed" [class.active]="mode === 'admin'" (click)="changeMode('admin')">Admin</button>
-    <button class="compacted" *ngIf="closed" [class.active]="mode === 'app'" (click)="changeMode('app')">
+    <button class="expanded" *ngIf="!closed" [class.active]="mode === 'app'"
+      (click)="changeMode('app')">App</button>
+    <button class="expanded" *ngIf="!closed" [class.active]="mode === 'admin'"
+      (click)="changeMode('admin')">Admin</button>
+    <button class="compacted" *ngIf="closed" [class.active]="mode === 'app'"
+      (click)="changeMode('app')">
       <span class="material-icons">apps</span>
     </button>
-    <button class="compacted" *ngIf="closed" [class.active]="mode === 'admin'" (click)="changeMode('admin')">
+    <button class="compacted" *ngIf="closed" [class.active]="mode === 'admin'"
+      (click)="changeMode('admin')">
       <span class="material-icons">admin_panel_settings</span>
     </button>
   </div>
@@ -25,7 +30,7 @@
         <span class="material-icons">expand_more</span>
       </div>
       <div class="sub">
-        <a [routerLink]="['user/task/new']" [routerLinkActive]="['active']">
+        <a [routerLink]="['task/new']" [routerLinkActive]="['active']">
           Novo
           <span class="material-icons">add</span>
         </a>
@@ -38,7 +43,7 @@
         <span class="material-icons">expand_more</span>
       </div>
       <div class="sub">
-        <a [routerLink]="['user/task/dashboard']" [routerLinkActive]="['active']">
+        <a [routerLink]="['task/dashboard']" [routerLinkActive]="['active']">
           Tarefas
           <span class="material-icons">list</span>
         </a>
