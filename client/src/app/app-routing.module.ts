@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthenticateComponent } from './authenticate/authenticate.component';
 
 const routes: Routes = [
   {
@@ -18,6 +17,15 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./authenticate/authenticate.module').then(m => m.AuthenticateModule)
+      }
+    ]
+  },
+  {
+    path: 'task',
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./task/task.module').then(m => m.TaskModule)
       }
     ]
   },
