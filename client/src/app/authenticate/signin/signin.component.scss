@@ -1,0 +1,38 @@
+.signin {
+  max-width: 400px;
+  width: 100%;
+
+  div.error-msg {
+    display: flex;
+    justify-content: flex-end;
+
+    span {
+      font-size: 15px;
+      font-weight: 500;
+      color: #d93834;
+    }
+  }
+
+  div.form-action {
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    button:last-child {
+      margin-left: 10px;
+    }
+
+    button {
+      outline: none;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #00000025;
+    }
+  }
+}

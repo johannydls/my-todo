@@ -1,0 +1,49 @@
+form.form {
+    display: flex;
+    flex-direction: column;
+
+    div.form-item {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      margin-top: 10px;
+      margin-bottom: 10px;
+
+      span.label {
+        position: absolute;
+        left: 10px;
+        top: -10px;
+        color: #818181;
+        background: #fff;
+        padding: 2px 6px;
+        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 8px;
+      }
+
+      input {
+        outline: none;
+        height: 30px;
+        font-size: 18px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #818181;
+      }
+
+      input:focus,
+      input:active,
+      input:focus-visible {
+        border: 1px solid #2582d3;
+      }
+    }
+
+    div.line {
+      display: flex;
+      flex-direction: row;
+    }
+
+    div.form-action {
+      display: flex;
+    }
+  }

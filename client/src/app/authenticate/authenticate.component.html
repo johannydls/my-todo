@@ -1,1 +1,12 @@
-<p>authenticate works!</p>
+<div class="auth-app">
+  <div class="auth-form">
+    <div class="header">
+      <img class="logo" src="../../assets/img/tasks.png"
+        alt="Logo da aplicação">
+      <span>My Tasks!</span>
+    </div>
+    <div class="content" *ngIf="mode === 'signin'">
+      <app-signin actualRoute="/session/auth"></app-signin>
+    </div>
+  </div>
+</div>

@@ -7,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthenticateComponent implements OnInit {
 
-  constructor() { }
+  public mode: 'signin' | 'signup';
+
+  constructor() {
+    this.mode = 'signin';
+  }
 
   ngOnInit(): void {
   }

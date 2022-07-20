@@ -1,0 +1,35 @@
+div.auth-app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+
+  div.auth-form {
+    div.header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+
+      img.logo {
+        width: 60px;
+      }
+
+      span {
+        font-size: 35px;
+        font-weight: 600;
+        margin-left: 10px;
+        color: #1b5e99;
+      }
+    }
+
+    div.content {
+      app-signin {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+  }
+}

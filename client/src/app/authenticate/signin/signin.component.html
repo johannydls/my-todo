@@ -1,0 +1,25 @@
+<div class="signin">
+  <form class="form" name="loginForm">
+    <div class="form-item">
+      <span class="label">Email</span>
+      <input type="email" name="email" [(ngModel)]="loginForm.email">
+    </div>
+    <div class="form-item">
+      <span class="label">Senha</span>
+      <input type="password" name="password" [(ngModel)]="loginForm.password">
+    </div>
+    <div class="error-msg" *ngIf="errors.not_found">
+      <span>Usuário não cadastrado!</span>
+    </div>
+    <div class="error-msg" *ngIf="errors.invalid_password">
+      <span>Senha incorreta!</span>
+    </div>
+    <div class="error-msg" *ngIf="errors.internal_error">
+      <span>Erro interno!</span>
+    </div>
+    <div class="form-action line">
+      <button class="btn-signup" [disabled]="loading">Cadastrar</button>
+      <button class="btn-signin" (click)="signIn()" [disabled]="loading">Entrar</button>
+    </div>
+  </form>
+</div>
