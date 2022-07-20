@@ -14,11 +14,11 @@ export class AppComponent {
   ) { }
 
   public isLogged(): boolean {
-    return true;
+    return this.session.getIsLogged();
   }
 
   public getUser(): any {
-    return { email: 'johanny.dls@gmail.com' };
+    return this.session.getUser();
   }
 
   public navbar(): { closed: boolean } {
