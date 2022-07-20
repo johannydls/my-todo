@@ -13,8 +13,6 @@ import { UserRoutingModule } from './user-routing.module';
     CommonModule,
     UserRoutingModule,
   ],
-  exports: [
-    UserComponent
-  ]
+  exports: []
 })
 export class UserModule { }
