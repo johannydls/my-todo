@@ -2,5 +2,5 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
-  "editor.wordWrap": "on"
+  "editor.wordWrap": "off"
 }
