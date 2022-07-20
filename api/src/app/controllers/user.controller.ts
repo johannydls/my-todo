@@ -42,13 +42,15 @@ export function controller(app: Express): void {
 
       if (!admin) {
         return res.status(StatusCodes.NOT_FOUND).send({
-          message: ReasonPhrases.NOT_FOUND
+          message: 'User not found',
+          type: 'NOT_FOUND'
         });
       }
 
       if (!admin.is_admin) {
         return res.status(StatusCodes.UNAUTHORIZED).send({
-          message: 'User not allowed'
+          message: 'User not allowed',
+          type: 'USER_PERMISSION'
         });
       }
 
@@ -74,7 +76,8 @@ export function controller(app: Express): void {
 
       if (user) {
         return res.status(StatusCodes.BAD_REQUEST).send({
-          message: 'User alread exists'
+          message: 'User alread exists',
+          type: 'USER_EXISTS'
         });
       }
 
@@ -98,13 +101,15 @@ export function controller(app: Express): void {
 
       if (!user) {
         return res.status(StatusCodes.NOT_FOUND).send({
-          message: ReasonPhrases.NOT_FOUND
+          message: 'User not found',
+          type: 'NOT_FOUND'
         });
       }
 
       if (!await bcryptCompare(password, user.password || '')) {
         return res.status(StatusCodes.BAD_REQUEST).send({
-          message: 'Invalid password'
+          message: 'Invalid password',
+          type: 'INVALID_PASSWORD'
         });
       }
 
@@ -120,7 +125,8 @@ export function controller(app: Express): void {
     } catch (error) {
       Logging.error(error);
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
-        message: ReasonPhrases.INTERNAL_SERVER_ERROR
+        message: ReasonPhrases.INTERNAL_SERVER_ERROR,
+        type: 'INTERNAL_SERVER_ERROR'
       });
     }
   });
