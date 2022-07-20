@@ -48,7 +48,8 @@ export class NavbarComponent implements OnInit {
   }
 
   public signOut(): void {
-    console.log('signOut');
+    this.session.routeNavigate('/session/auth');
+    this.session.logout();
   }
 
 }
