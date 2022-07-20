@@ -30,6 +30,15 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'admin',
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+      }
+    ]
+  },
+  {
     path: '**',
     redirectTo: 'session/auth',
     pathMatch: 'full'
