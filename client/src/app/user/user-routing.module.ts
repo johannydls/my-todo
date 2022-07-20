@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SessionGuard } from '../guards/session/session.guard';
 import { UserComponent } from './user.component';
 
 const routes: Routes = [
@@ -13,7 +14,8 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        component: UserComponent
+        component: UserComponent,
+        canActivate: [SessionGuard]
       }
     ]
   }
