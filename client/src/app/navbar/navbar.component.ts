@@ -12,18 +12,18 @@ export class NavbarComponent implements OnInit {
   public closed: boolean = false;
 
   constructor(
-    private session: SessionService
+    private session: SessionService,
   ) { }
 
   ngOnInit(): void {
   }
 
   public showNavbar(): boolean {
-    return true;
+    return this.isLogged();
   }
 
   public isLogged(): boolean {
-    return true;
+    return this.session.getIsLogged() && !!this.session.getUser();
   }
 
   public isAdmin(): boolean {
