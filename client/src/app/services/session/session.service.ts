@@ -64,6 +64,9 @@ export class SessionService {
           this.logout();
           this.router.navigate(['/session/auth']);
         });
+      } else {
+        this.logout();
+        this.router.navigate(['/session/auth']);
       }
     }
   }

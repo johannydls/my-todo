@@ -40,7 +40,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'session/auth',
+    redirectTo: 'task/dashboard',
     pathMatch: 'full'
   }
 ];
